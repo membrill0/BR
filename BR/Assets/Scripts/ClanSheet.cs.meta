@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 907dd7e19be716044b31f79603c4d9c7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - PlayerClan: {instanceID: 0}
+  - RageStat: {fileID: 11400000, guid: 05d5e4bb527508042b4fb2aec7d81433, type: 2}
+  - AxesStat: {fileID: 11400000, guid: f0f546e7345dac14d947e095b7ad1426, type: 2}
+  - HornsStat: {fileID: 11400000, guid: 20a02c27282213a4d87c720768b205a5, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
