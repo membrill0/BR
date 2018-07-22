@@ -9,18 +9,25 @@ public class Player : NetworkBehaviour
     {
         get { return AgeTrack.instance; }
     }
-    public GameObject ClanSheetPrefab;
-    [SyncVar (hook = "SetGameObjectName")]
+    public MainUI MainUI
+    {
+        get { return MainUI.instance; }
+    }
+
+
+    [SyncVar]
     public string Name;
 
     public ClanSheet ClanSheet;
+    public GameObject ClanSheetPrefab;
+
+    
 
     void Start()
     {
         if (isServer)
         {
             Debug.Log("Server");
-            
         }
 
         if(isLocalPlayer)
@@ -30,145 +37,82 @@ public class Player : NetworkBehaviour
         }
         else
         {
-            Debug.Log("notLocalPlayer");
             gameObject.name = Name;
         }
-
-
-        if (track.Players.Contains(this) == false)
-        {
-            track.Players.Add(this);
-        }
-
+        PlayerConnected();
     }
 
     /// <summary>
-    /// Client sets the player name. TODO: get the name from the playerprefs (random for now)
+    /// Tell the server to set the name
     /// </summary>
+    /// <param name="name"></param>
     [Command]
     public void CmdSetName(string name)
     {
-        Name = name;
+        RpcSetName(name);
     }
-
-    void Update()
+    /// <summary>
+    /// Tell all clients to set the name
+    /// </summary>
+    /// <param name="name"></param>
+    [ClientRpc]
+    public void RpcSetName(string name)
     {
-        if (isLocalPlayer)
-        {
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                DebugSystem.instance.Log(Name + "----" + gameObject.name);
-
-                foreach (Player pl in track.Players)
-                {
-                    DebugSystem.instance.Log(pl.Name);
-                }
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            foreach (ClanSheet sheet in track.ClanSheets)
-            {
-                if (sheet.Player == null)
-                {
-                    AskToAssignToSheet(sheet);
-                    break;
-                }
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (ClanSheet != null)
-            {
-                AskToPickClan(track.Box.Clans[Random.Range(0, track.Box.Clans.Count)]);
-            }
-        }
+        Name = name;
+        gameObject.name = name;
         
     }
 
-    public void AskToPickClan(Clan clan)
+    public void AddPlayerToTrack()
     {
-        if(isLocalPlayer)
+        if(track.Players.Contains(this)==false)
         {
-            int i = 0;
-            foreach(Clan cln in track.Box.Clans)
-            {
-                if(cln == clan)
-                {
-                    CmdPickClan(i);
-                    break;
-                }
-                i++;
-            }
+            track.Players.Add(this);
         }
     }
 
-    [Command]
-    public void CmdPickClan(int index)
+    private void OnDestroy()
     {
-        bool clanTaken = false;
-        foreach(ClanSheet sheet in track.ClanSheets)
+        PlayerDisconnected();
+    }
+
+    public void PlayerDisconnected()
+    {
+        if (track.Players.Contains(this) == true)
         {
-            if(sheet.PlayerClan == track.Box.Clans[index])
-            {
-                clanTaken = true;
-                break;
-            }
+            track.Players.Remove(this);
         }
-        if (clanTaken == false)
+        DebugSystem.instance.Log(this.Name + " disconnected!");
+    }
+
+    public void PlayerConnected()
+    {
+        AddPlayerToTrack();
+        if (isServer)
         {
-            RpcPickClan(index);
+            ClanSheet = Instantiate(ClanSheetPrefab).GetComponent<ClanSheet>();
+            ClanSheet.Player = this;
+            NetworkServer.SpawnWithClientAuthority(ClanSheet.gameObject, connectionToClient);
+            
+            
+        }
+        if(isLocalPlayer)
+        {
+            CmdSetCurrentPhase();
         }
         else
         {
-            TargetSendMessageToClient(connectionToClient,"Clan is already taken!");
-        }
-    }
-    [ClientRpc]
-    public void RpcPickClan(int index)
-    {
-        ClanSheet.PlayerClan = track.Box.Clans[index];
-    }
 
-    public void AskToAssignToSheet(ClanSheet sheet)
-    {
-        if (isLocalPlayer)
-        {
-            if (sheet.Player == null)
-            {
-                CmdAssignPlayerToSheet(sheet.Identity);
-            }
         }
+        
+
+        DebugSystem.instance.Log("player connected!");
     }
 
     [Command]
-    public void CmdAssignPlayerToSheet(NetworkIdentity identity)
+    public void CmdSetCurrentPhase()
     {
-        RpcAssignPlayerToSheet(identity);
-    }
-    [ClientRpc]
-    public void RpcAssignPlayerToSheet(NetworkIdentity identity)
-    {
-        if (ClanSheet != null)
-        {
-            ClanSheet.Player = null;
-        }
-        ClanSheet sheet = identity.GetComponent<ClanSheet>();
-        sheet.Player = this;
-        ClanSheet = sheet;
-
-    }
-    
-    /// <summary>
-    /// SyncVar hook to name the gameobject same as the player name
-    /// </summary>
-    /// <param name="name"></param>
-    public void SetGameObjectName(string name)
-    {
-        Name = name;
-        gameObject.name = Name;
+        track.SetCurrentPhase();
     }
 
     [TargetRpc]

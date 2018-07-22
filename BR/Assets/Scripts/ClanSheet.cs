@@ -8,6 +8,7 @@ public class ClanSheet : NetworkBehaviour
 {
     [ContextMenuItem("Pick Cards", "PickCards")]
     [ContextMenuItem("Send Next Draft", "SendNextDraft")]
+
     public Player Player;
     public Clan PlayerClan;
     public int CardsToConsider = 1;
@@ -161,7 +162,6 @@ public class ClanSheet : NetworkBehaviour
 
     void Awake()
     {
-        Identity = GetComponent<NetworkIdentity>();
         AddToTrack();
     }
 
@@ -171,17 +171,32 @@ public class ClanSheet : NetworkBehaviour
         {
             AgeTrack.ClanSheets.Add(this);
             transform.SetParent(AgeTrack.ClanSheetsParent.transform);
-            MainUI.instance.ClanSheetChooseUI.AddClanSheetUI(this);
         }
     }
-    [ClientRpc]
-    public void RpcRemoveFromTrack()
+
+    public override void OnStartAuthority()
     {
-        if (AgeTrack.ClanSheets.Contains(this) == true)
+        if (isServer)
         {
-            AgeTrack.ClanSheets.Remove(this);
-            Destroy(ClanSheetUI.gameObject);
-            Destroy(this.gameObject);
+            RpcAssignPlayer(Player.gameObject);
+            Debug.Log(GetComponent<NetworkIdentity>().isActiveAndEnabled);
+            DebugSystem.instance.Log("On Start Client Clan Sheet");
+        }
+    }
+
+    [ClientRpc]
+    public void RpcAssignPlayer(GameObject player)
+    {
+        Player = player.GetComponent<Player>();
+        DebugSystem.instance.Log("RPC");
+        Debug.Log("asdsadasdasdas");
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            RpcAssignPlayer(Player.gameObject);
         }
     }
 }

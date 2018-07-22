@@ -7,12 +7,13 @@ public class ClanSheetChooseUI : MonoBehaviour
 {
     public GameObject ClanSheetUIPrefab;
     public Transform ClanSheetList;
-
+    public Player Player;
     public GameObject AddButton;
 	
     public void AddClanSheetUI(ClanSheet clanSheet)
     {
         ClanSheetUI csUI = Instantiate(ClanSheetUIPrefab).GetComponent<ClanSheetUI>();
+        csUI.Player = Player;
         csUI.ClanSheet = clanSheet;
         csUI.transform.SetParent(ClanSheetList);
         clanSheet.ClanSheetUI = csUI;
@@ -20,12 +21,15 @@ public class ClanSheetChooseUI : MonoBehaviour
 
     public void AddClanButton()
     {
-        AgeTrack.instance.AddRemoveClanSheets(true);
+        //AgeTrack.instance.AddRemoveClanSheets(true);
     }
     
-    void Start()
+    public void Initialize()
     {
-    //    AddButton.SetActive(false);
+        if (Player.isServer == false)
+        {
+            AddButton.SetActive(false);
+        }
         transform.localPosition = Vector3.zero;
     }
 
