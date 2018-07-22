@@ -365,7 +365,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &233741121
 MonoBehaviour:
@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.990566, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -393,7 +393,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -531,6 +531,7 @@ MonoBehaviour:
   ClanSheetUIPrefab: {fileID: 1181933438656720, guid: ff3e4c8dc64eaaa4e891997910f2c7bf,
     type: 2}
   ClanSheetList: {fileID: 107503863}
+  Player: {fileID: 0}
   AddButton: {fileID: 1459509025}
 --- !u!114 &567042583
 MonoBehaviour:
@@ -1038,6 +1039,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 233741121}
+  Timer: 10
 --- !u!1 &1155987344
 GameObject:
   m_ObjectHideFlags: 0

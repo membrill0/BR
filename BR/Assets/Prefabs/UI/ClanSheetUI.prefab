@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224712581717249066}
   - component: {fileID: 114722044820550056}
+  - component: {fileID: 114114325254821608}
   m_Layer: 5
   m_Name: ClanSheetUI
   m_TagString: Untagged
@@ -426,6 +427,38 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Dropdown+DropdownEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114114325254821608
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1181933438656720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 255
+    i1: 62
+    i2: 76
+    i3: 141
+    i4: 198
+    i5: 78
+    i6: 170
+    i7: 164
+    i8: 232
+    i9: 145
+    i10: 153
+    i11: 121
+    i12: 16
+    i13: 242
+    i14: 199
+    i15: 191
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114129595009248152
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -759,7 +792,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114722044820550056}
-        m_MethodName: Test
+        m_MethodName: AssignPlayerToSheet
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -817,6 +850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ClanSheet: {fileID: 0}
   RemoveButton: {fileID: 1587680682267506}
+  PlayerNameText: {fileID: 114985785128954542}
   Player: {fileID: 0}
 --- !u!114 &114735697974962646
 MonoBehaviour:

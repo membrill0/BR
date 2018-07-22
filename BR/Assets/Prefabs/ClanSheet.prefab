@@ -400,11 +400,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907dd7e19be716044b31f79603c4d9c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerName: 
+  Player: {fileID: 0}
   PlayerClan: {fileID: 0}
   CardsToConsider: 1
-  AgeTrack: {fileID: 0}
   NextPlayer: {fileID: 0}
+  ClanSheetUI: {fileID: 0}
+  Identity: {fileID: 0}
   rageTrack: 0
   RageStat: {fileID: 11400000, guid: 05d5e4bb527508042b4fb2aec7d81433, type: 2}
   AxesStat: {fileID: 11400000, guid: f0f546e7345dac14d947e095b7ad1426, type: 2}
@@ -474,4 +475,4 @@ MonoBehaviour:
     i14: 138
     i15: 132
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
+  m_LocalPlayerAuthority: 1
